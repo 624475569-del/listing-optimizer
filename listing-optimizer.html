@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>跨境Listing优化大师</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:15px}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Oxygen,Ubuntu,sans-serif;background:#f1f4f9;color:#1a1d23}
+:root{--primary:#2563eb;--primary-dark:#1d4ed8;--surface:#fff;--surface-alt:#f8fafc;--border:#e2e8f0;--radius:8px;--shadow:0 1px 3px rgba(0,0,0,.08)}
+.app-header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.app-header .brand{display:flex;align-items:center;gap:12px}
+.app-header .brand h1{font-size:1.15rem;font-weight:650}
+.app-header .brand span{font-size:.78rem;color:var(--text-muted);font-weight:400}
+.header-actions{display:flex;gap:10px;align-items:center}
+.app-main{padding:24px;max-width:1200px;margin:0 auto}
+.container{display:grid;grid-template-columns:420px 1fr;gap:24px;align-items:start}
+@media(max-width:860px){.container{grid-template-columns:1fr}.app-main{padding:16px}.app-header{padding:0 16px}}
+.card{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);box-shadow:var(--shadow);overflow:hidden}
+.card-header{padding:16px 20px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.card-header h2{font-size:.95rem;font-weight:600;display:flex;align-items:center;gap:8px}
+.card-body{padding:20px}
+.form-group{margin-bottom:18px}.form-group:last-child{margin-bottom:0}
+.form-label{display:block;font-size:.8rem;font-weight:550;margin-bottom:6px}
+.form-label .hint{font-weight:400;color:var(--text-muted);font-size:.75rem}
+.form-control{width:100%;padding:10px 12px;font-size:.88rem;border:1px solid var(--border);border-radius:6px;background:var(--surface);font-family:inherit}
+.form-control:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
+textarea.form-control{min-height:140px;resize:vertical}
+select.form-control{appearance:none;cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2'/%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:30px}
+.char-count{text-align:right;font-size:.72rem;color:var(--text-muted);margin-top:4px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 20px;font-size:.88rem;font-weight:550;border-radius:6px;border:1px solid transparent;cursor:pointer;user-select:none}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.btn-primary:hover:not(:disabled){background:var(--primary-dark)}
+.btn-outline{background:transparent;color:var(--text);border-color:var(--border)}
+.btn-outline:hover:not(:disabled){background:var(--surface-alt)}
+.btn-sm{padding:6px 12px;font-size:.78rem;gap:4px}
+.btn-ghost{background:transparent;color:var(--text-muted);border-color:transparent}
+.btn-ghost:hover{background:var(--surface-alt);color:var(--text)}
+.btn-generate{width:100%;padding:14px;font-size:1rem;font-weight:600;gap:10px}
+.spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.slideout{position:fixed;top:0;right:-400px;width:400px;max-width:100vw;height:100%;background:var(--surface);border-left:1px solid var(--border);box-shadow:-4px 0 20px rgba(0,0,0,.08);z-index:200;transition:right .25s ease;display:flex;flex-direction:column}
+.slideout.open{right:0}
+.slideout-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.slideout-header h2{font-size:1rem;font-weight:600}
+.slideout-body{flex:1;overflow-y:auto;padding:0}
+.slideout-footer{padding:12px 20px;border-top:1px solid var(--border)}
+.tabs{display:flex;border-bottom:1px solid var(--border)}
+.tab{padding:10px 18px;font-size:.82rem;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;color:var(--text-muted);background:none;border-top:none;border-left:none;border-right:none}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+.tab-content{display:none;padding:20px}
+.tab-content.active{display:block}
+.results-placeholder{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;color:var(--text-muted);text-align:center}
+.results-placeholder p{font-size:.9rem;max-width:280px;line-height:1.6}
+.result-item{padding:12px 14px;background:var(--surface-alt);border-radius:6px;border:1px solid var(--border);margin-bottom:8px;font-size:.85rem;line-height:1.5;position:relative}
+.result-item:hover{border-color:#cbd5e1}
+.result-item .copy-btn{position:absolute;top:8px;right:8px;opacity:0}
+.result-item:hover .copy-btn{opacity:1}
+@media(max-width:860px){.result-item .copy-btn{opacity:1}}
+.toast-container{position:fixed;bottom:24px;right:24px;z-index:300;display:flex;flex-direction:column;gap:8px}
+.toast{padding:12px 16px;border-radius:6px;background:#1a1d23;color:#fff;font-size:.82rem;box-shadow:0 4px 12px rgba(0,0,0,.15);animation:toastIn .25s ease;max-width:320px}
+.toast.success{background:#059669}.toast.error{background:#dc2626}
+@keyframes toastIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.export-bar{display:flex;gap:8px;flex-wrap:wrap;padding:12px 20px;background:var(--surface-alt);border-top:1px solid var(--border)}
+.history-item{padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer}
+.history-item:hover{background:var(--surface-alt)}
+.history-item .title{font-size:.82rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.history-item .meta{font-size:.72rem;color:var(--text-muted);display:flex;gap:8px;margin-top:3px}
+.history-empty{padding:40px 20px;text-align:center;color:var(--text-muted)}
+.settings-group{margin-bottom:20px}
+.settings-group .desc{font-size:.75rem;color:var(--text-muted);margin-top:4px}
+.status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px}
+.status-dot.ok{background:#22c55e}.status-dot.warn{background:#eab308}
+.text-muted{color:var(--text-muted)}
+</style>
+</head>
+<body>
+<header class="app-header">
+  <div class="brand">
+    <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect width="28" height="28" rx="6" fill="#2563eb"/><path d="M8 10h12M8 14h10M8 18h8" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/><circle cx="20" cy="18" r="4" fill="#fff" opacity=".9"/><path d="M19 18h2M20 17v2" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round"/></svg>
+    <div><h1>Listing Optimizer</h1><span>跨境Listing优化大师</span></div>
+  </div>
+  <div class="header-actions">
+    <button class="btn btn-ghost btn-sm" id="historyBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> 历史</button>
+    <button class="btn btn-ghost btn-sm" id="settingsBtn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
+  </div>
+</header>
+<main class="app-main">
+<div class="container">
+  <div class="card">
+    <div class="card-header"><h2><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg> 产品信息</h2></div>
+    <div class="card-body">
+      <div class="form-group">
+        <label class="form-label" for="productDesc">中文产品描述 <span class="hint">尽可能详细，包括材质、尺寸、用途、卖点</span></label>
+        <textarea class="form-control" id="productDesc" placeholder="例如：这是一款手工制作的帆布背包，采用加厚帆布材质，容量约30升，适合日常通勤和短途旅行。主仓有笔记本电脑隔层，前侧有两个拉链口袋。颜色有黑色、军绿色和卡其色三种。重量约0.8kg。"></textarea>
+        <div class="char-count"><span id="descCount">0</span> 字</div>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="productCategory">产品品类</label>
+        <select class="form-control" id="productCategory"><option value="">自动识别（通用）</option><option value="家居日用">家居日用</option><option value="服饰箱包">服饰箱包</option><option value="电子产品">电子产品</option><option value="美妆个护">美妆个护</option><option value="运动户外">运动户外</option><option value="汽摩配">汽摩配</option><option value="宠物用品">宠物用品</option><option value="厨房餐饮">厨房餐饮</option><option value="婴童用品">婴童用品</option><option value="办公用品">办公用品</option></select>
+      </div>
+      <div class="form-group">
+        <label class="form-label" for="targetPlatform">目标平台</label>
+        <select class="form-control" id="targetPlatform"><option>Amazon</option><option>Shopee</option><option>Temu</option><option>eBay</option><option>通用</option></select>
+      </div>
+      <button class="btn btn-primary btn-generate" id="generateBtn" disabled>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg> 生成优化Listing
+      </button>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header"><h2><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg> 优化结果</h2></div>
+    <div id="resultsContainer">
+      <div class="results-placeholder" id="placeholder">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#94a3b8" stroke-width="1.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="18" x2="12" y2="12"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
+        <p>输入中文产品信息，点击"生成优化Listing"<br>AI 会自动生成英文标题、卖点、关键词和描述</p>
+        <p class="sub">适配 Amazon / Shopee / Temu 等主流跨境平台</p>
+      </div>
+      <div id="resultsContent" style="display:none">
+        <div class="tabs"><button class="tab active" data-tab="titles">标题</button><button class="tab" data-tab="bullets">卖点</button><button class="tab" data-tab="keywords">关键词</button><button class="tab" data-tab="description">描述</button></div>
+        <div id="tab-titles" class="tab-content active"></div>
+        <div id="tab-bullets" class="tab-content"></div>
+        <div id="tab-keywords" class="tab-content"></div>
+        <div id="tab-description" class="tab-content"></div>
+        <div class="export-bar">
+          <button class="btn btn-outline btn-sm" id="copyAllBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg> 复制全部</button>
+          <button class="btn btn-outline btn-sm" id="exportTxtBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> 导出TXT</button>
+          <button class="btn btn-outline btn-sm" id="exportCsvBtn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> 导出CSV</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</main>
+<aside class="slideout" id="historySlideout">
+  <div class="slideout-header"><h2>历史记录</h2><button class="btn btn-ghost btn-sm" id="closeHistory"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <div class="slideout-body" id="historyList"><div class="history-empty">暂无历史记录</div></div>
+  <div class="slideout-footer"><button class="btn btn-outline btn-sm" id="clearHistoryBtn" style="width:100%">清空历史</button></div>
+</aside>
+<aside class="slideout" id="settingsSlideout">
+  <div class="slideout-header"><h2>设置</h2><button class="btn btn-ghost btn-sm" id="closeSettings"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+  <div class="slideout-body" style="padding:20px">
+    <div class="settings-group">
+      <div class="label">API 密钥 <span class="text-muted" style="font-weight:400;font-size:.75rem">（必填，用于调用AI）</span></div>
+      <input type="password" class="form-control" id="apiKeyInput" placeholder="sk-..." autocomplete="off">
+      <div class="desc"><span class="status-dot warn" id="apiStatusDot"></span><span id="apiStatusText">未设置 — 在 platform.deepseek.com/api-keys 获取</span></div>
+    </div>
+    <div class="settings-group">
+      <div class="label">AI 模型</div>
+      <select class="form-control" id="modelSelect"><option value="deepseek-chat">DeepSeek Chat（推荐）</option><option value="deepseek-reasoner">DeepSeek Reasoner（更强但较慢）</option></select>
+    </div>
+    <div class="settings-group">
+      <div class="label">语气风格</div>
+      <select class="form-control" id="toneSelect"><option value="professional">专业商务</option><option value="persuasive">说服营销</option><option value="concise">简洁精炼</option><option value="detailed">详细描述</option></select>
+    </div>
+  </div>
+  <div class="slideout-footer" style="flex-direction:column;gap:8px">
+    <button class="btn btn-primary btn-sm" id="saveSettingsBtn" style="width:100%">保存设置</button>
+    <div style="font-size:.72rem;color:var(--text-muted);text-align:center">密钥仅存储在本地浏览器，不会上传到服务器</div>
+  </div>
+</aside>
+<div class="toast-container" id="toastContainer"></div>
+<script>
+const STATE={apiKey:localStorage.getItem('listing_opt_api_key')||'sk-3960b74eaa1f4f0597b43dd5d10a954e',model:localStorage.getItem('listing_opt_model')||'deepseek-chat',tone:localStorage.getItem('listing_opt_tone')||'professional'}
+const $=id=>document.getElementById(id),descEl=$('productDesc'),descCount=$('descCount'),generateBtn=$('generateBtn'),resultsContent=$('resultsContent'),placeholder=$('placeholder')
+const apiKeyInput=$('apiKeyInput'),modelSelect=$('modelSelect'),toneSelect=$('toneSelect')
+apiKeyInput.value=STATE.apiKey;modelSelect.value=STATE.model;toneSelect.value=STATE.tone;updateApiStatus();updateGenerateBtn()
+function updateApiStatus(){const s=$('apiStatusText'),d=$('apiStatusDot');if(STATE.apiKey){const p=STATE.apiKey.length>12?STATE.apiKey.slice(0,8)+'...'+STATE.apiKey.slice(-4):STATE.apiKey;d.className='status-dot ok';s.textContent='已设置: '+p}else{d.className='status-dot warn';s.textContent='未设置'}}
+function updateGenerateBtn(){if(STATE.apiKey){generateBtn.disabled=false;generateBtn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg> 生成优化Listing'}else{generateBtn.disabled=true;generateBtn.innerHTML='<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg> 请先设置 API 密钥'}}
+descEl.addEventListener('input',()=>{descCount.textContent=descEl.value.length})
+$('settingsBtn').onclick=()=>{$('settingsSlideout').classList.add('open')};$('closeSettings').onclick=()=>{$('settingsSlideout').classList.remove('open')}
+$('historyBtn').onclick=()=>{$('historySlideout').classList.add('open')};$('closeHistory').onclick=()=>{$('historySlideout').classList.remove('open')}
+$('saveSettingsBtn').onclick=()=>{const k=apiKeyInput.value.trim();STATE.apiKey=k;localStorage.setItem('listing_opt_api_key',k);STATE.model=modelSelect.value;STATE.tone=toneSelect.value;localStorage.setItem('listing_opt_model',STATE.model);localStorage.setItem('listing_opt_tone',STATE.tone);updateApiStatus();updateGenerateBtn();$('settingsSlideout').classList.remove('open');toast('设置已保存','success')}
+function toast(m,t=''){const e=document.createElement('div');e.className='toast'+(t?' '+t:'');e.textContent=m;$('toastContainer').appendChild(e);setTimeout(()=>{e.style.opacity='0';e.style.transition='opacity .3s';setTimeout(()=>e.remove(),300)},2500)}
+async function copyText(t,b){try{await navigator.clipboard.writeText(t);if(b){b.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 已复制';setTimeout(()=>{b.innerHTML='复制'},1500)}else toast('已复制','success')}catch{toast('复制失败','error')}}
+document.querySelectorAll('.tab').forEach(t=>{t.onclick=()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(x=>x.classList.remove('active'));t.classList.add('active');$('tab-'+t.dataset.tab).classList.add('active')}})
+generateBtn.onclick=async()=>{
+  const d=descEl.value.trim();if(!d||d.length<10){toast('请输入至少10个字符的产品描述','error');return}
+  const tMap={professional:'Professional and trustworthy',persuasive:'Persuasive and compelling',concise:'Concise and punchy',detailed:'Detailed and informative'}
+  const prompt='You are an expert Amazon/eBay/Shopee listing copywriter. Generate a high-converting English product listing from the Chinese description below.\nTarget Platform: '+$('targetPlatform').value+'\nTone: '+(tMap[STATE.tone]||tMap.professional)+'\nProduct Category: '+(document.getElementById('productCategory').value||'General')+'\n\nChinese Description: "'+d+'"\n\nPlease output exactly in this format:\n---TITLES---\n[3 different title options, each 150-200 characters, numbered TITLE 1, TITLE 2, TITLE 3]\n---BULLETS---\n[5-7 bullet points with short headers, each on a new line]\n---KEYWORDS---\n[15-20 comma-separated keywords]\n---DESCRIPTION---\n[100-150 word product description]'
+  generateBtn.disabled=true;generateBtn.innerHTML='<span class="spinner"></span> AI 生成中...';placeholder.style.display='none';resultsContent.style.display='none'
+  try{
+    const r=await fetch('https://api.deepseek.com/v1/chat/completions',{method:'POST',headers:{'Content-Type':'application/json','Authorization':'Bearer '+STATE.apiKey},body:JSON.stringify({model:STATE.model,messages:[{role:'user',content:prompt}],temperature:.7,max_tokens:2000})})
+    if(!r.ok){const e=await r.json().catch(()=>({}));throw new Error(e?.error?.message||'HTTP '+r.status)}
+    const j=await r.json(),raw=j.choices[0].message.content
+    const g=l=>{const m=raw.match(new RegExp('---'+l+'---\\s*([\\s\\S]*?)(?=---|$)','i'));return m?m[1].trim():''}
+    const data={titles:g('TITLES'),bullets:g('BULLETS'),keywords:g('KEYWORDS'),description:g('DESCRIPTION')}
+    if(!data.titles)throw new Error('AI返回格式异常')
+    placeholder.style.display='none';resultsContent.style.display='block'
+    const th=data.titles.split(/\n/).filter(l=>l.trim()).map((t,i)=>{const c=t.replace(/^TITLE\s*\d+[\.:\)]\s*/i,'').trim();if(!c)return '';return '<div class="result-item">'+c+'<button class="btn btn-outline btn-sm copy-btn" onclick="copyText(decodeURIComponent(\''+encodeURIComponent(c)+'\'),this)">复制</button></div>'}).filter(Boolean).join('')||'<div class="text-muted">未能生成标题</div>'
+    $('tab-titles').innerHTML=th
+    const bh=data.bullets.split(/\n/).filter(l=>l.trim()&&!/^---/i.test(l)).map(b=>{const c=b.replace(/^[-•*]\s*/,'').trim();if(!c)return '';return '<div class="result-item"><div class="label" style="font-size:.72rem;color:var(--text-muted);margin-bottom:4px;font-weight:500">卖点</div>'+c+'<button class="btn btn-outline btn-sm copy-btn" onclick="copyText(decodeURIComponent(\''+encodeURIComponent(c)+'\'),this)">复制</button></div>'}).filter(Boolean).join('')||'<div class="text-muted">未能生成卖点</div>'
+    $('tab-bullets').innerHTML=bh
+    $('tab-keywords').innerHTML='<div class="result-item" style="padding:14px">'+data.keywords+'<button class="btn btn-outline btn-sm copy-btn" onclick="copyText(decodeURIComponent(\''+encodeURIComponent(data.keywords)+'\'),this)">复制</button></div>'
+    $('tab-description').innerHTML='<div class="result-item" style="padding:14px">'+data.description+'<button class="btn btn-outline btn-sm copy-btn" onclick="copyText(decodeURIComponent(\''+encodeURIComponent(data.description)+'\'),this)">复制</button></div>'
+    document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.tab-content').forEach(t=>t.classList.remove('active'));document.querySelector('.tab[data-tab="titles"]').classList.add('active');$('tab-titles').classList.add('active')
+    const h=JSON.parse(localStorage.getItem('listing_opt_history')||'[]');h.unshift({id:Date.now(),input:d.slice(0,100),platform:$('targetPlatform').value,timestamp:new Date().toLocaleString('zh-CN')});if(h.length>50)h.length=50;localStorage.setItem('listing_opt_history',JSON.stringify(h));renderHistory();toast('优化完成！','success')
+  }catch(e){console.error(e);placeholder.style.display='flex';resultsContent.style.display='none';toast('错误: '+e.message,'error')}
+  finally{generateBtn.disabled=false;updateGenerateBtn()}
+}
+$('copyAllBtn').onclick=async()=>{const g=s=>[...document.querySelectorAll(s)].map(e=>e.textContent.replace('复制','').trim()).join('\n');const t='=== TITLES ===\n'+g('#tab-titles .result-item')+'\n\n=== BULLETS ===\n'+g('#tab-bullets .result-item')+'\n\n=== KEYWORDS ===\n'+g('#tab-keywords .result-item')+'\n\n=== DESCRIPTION ===\n'+g('#tab-description .result-item');await copyText(t);toast('已复制全部','success')}
+$('exportTxtBtn').onclick=()=>{const g=s=>[...document.querySelectorAll(s)].map(e=>e.textContent.replace('复制','').trim()).join('\n');const t='=== TITLES ===\n'+g('#tab-titles .result-item')+'\n\n=== BULLETS ===\n'+g('#tab-bullets .result-item')+'\n\n=== KEYWORDS ===\n'+g('#tab-keywords .result-item')+'\n\n=== DESCRIPTION ===\n'+g('#tab-description .result-item');const b=new Blob([t],{type:'text/plain'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='listing-optimized.txt';a.click();URL.revokeObjectURL(a)}
+$('exportCsvBtn').onclick=()=>{const e=s=>s.replace(/"/g,'""'),g=s=>[...document.querySelectorAll(s)].map(el=>'"'+e(el.textContent.replace('复制','').trim())+'"').join('\n');const csv='Section,Content\nTitles,'+g('#tab-titles .result-item').replace(/\n/g,'\\n')+'\nBullets,'+g('#tab-bullets .result-item').replace(/\n/g,'\\n')+'\nKeywords,'+g('#tab-keywords .result-item')+'\nDescription,'+g('#tab-description .result-item');const b=new Blob([csv],{type:'text/csv'}),a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='listing-optimized.csv';a.click();URL.revokeObjectURL(a)}
+function renderHistory(){const h=JSON.parse(localStorage.getItem('listing_opt_history')||'[]'),l=$('historyList');if(!h.length){l.innerHTML='<div class="history-empty">暂无历史记录</div>';return}l.innerHTML=h.map(i=>'<div class="history-item"><div class="title">'+i.input+'</div><div class="meta"><span>'+i.platform+'</span><span>'+i.timestamp+'</span></div></div>').join('')}
+$('clearHistoryBtn').onclick=()=>{localStorage.removeItem('listing_opt_history');renderHistory();toast('已清空历史','success')}
+renderHistory()
+</script>
+</body>
+</html>
